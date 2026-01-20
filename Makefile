@@ -10,7 +10,7 @@ run: compile # run and compile
 compile: # compile
 	$(CC) $(CFLAGS) src/main.c -o main $(LDLIBS)
 
-clean: # clean
+clean: main # clean
 	rm main
 
 
