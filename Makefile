@@ -1,12 +1,19 @@
+default: help
+
 CC = gcc
+CFLAGS = -Wall -Wextra
+LDLIBS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
-CFLAGS = -Wall -Wextra -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
+run: compile # run and compile
+	./main
 
-run:
-	$(CC) main.c $(CFLAGS) -o main && ./main
+compile: # compile
+	$(CC) $(CFLAGS) src/main.c -o main $(LDLIBS)
 
-compile:
-	$(CC) main.c $(CFLAGS) -o main
-
-clean:
+clean: # clean
 	rm main
+
+
+.PHONY: help
+help: # am i helpful ?
+	@grep -E '^[a-zA-Z0-9 -]+:.*#'  Makefile | sort | while read -r l; do printf "\033[1;32m$$(echo $$l | cut -f 1 -d':')\033[00m:$$(echo $$l | cut -f 2- -d'#')\n"; done
