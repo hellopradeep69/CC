@@ -13,11 +13,11 @@ int main(void) {
   InitWindow(WIDTH, HEIGHT, "Lost");
   SetTargetFPS(FPS);
 
-  Rectangle rect = {WIDTH / 2, HEIGHT / 2, BLOCK_SIZE2, BLOCK_SIZE2};
-  Vector2 origin = {BLOCK_SIZE2 / 2, BLOCK_SIZE2 / 2};
+  Rectangle rect = {WIDTH / 2.0, HEIGHT / 2.0, BLOCK_SIZE2, BLOCK_SIZE2};
+  Vector2 origin = {BLOCK_SIZE2 / 2.0, BLOCK_SIZE2 / 2.0};
 
-  Rectangle rect2 = {WIDTH / 2, HEIGHT / 2, BLOCK_SIZE, BLOCK_SIZE};
-  Vector2 origin2 = {BLOCK_SIZE / 2, BLOCK_SIZE / 2};
+  Rectangle rect2 = {WIDTH / 2.0, HEIGHT / 2.0, BLOCK_SIZE, BLOCK_SIZE};
+  Vector2 origin2 = {BLOCK_SIZE / 2.0, BLOCK_SIZE / 2.0};
 
   float angle = 0;
 
