@@ -8,7 +8,7 @@ run: compile # run and compile
 	./main
 
 compile: # compile
-	$(CC) $(CFLAGS) src/main.c -o main $(LDLIBS)
+	$(CC) $(CFLAGS) src/main.c src/shader.c -o main $(LDLIBS)
 
 clean: main # clean
 	rm main

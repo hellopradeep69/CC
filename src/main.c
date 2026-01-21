@@ -1,4 +1,5 @@
 #include "raylib.h"
+#include "shader.h"
 #include <stdbool.h>
 #include <stdlib.h>
 #include <sys/types.h>
@@ -34,11 +35,15 @@ int main(void) {
     DrawRectanglePro(rect2, origin2, angle, GREEN);
     DrawRectanglePro(rect, origin, angle + 10, YELLOW);
 
+    // tri using header
+    Triangle();
+
     angle += 1.50;
 
     DrawFPS(50, 50);
 
     if (IsKeyDown(KEY_Q)) {
+      // name();
       exit(0);
     }
 
