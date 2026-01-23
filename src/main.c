@@ -3,7 +3,9 @@
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <sys/types.h>
+#include <unistd.h>
 
 #define WIDTH 700
 #define HEIGHT 700
@@ -11,7 +13,17 @@
 #define BLOCK_SIZE2 100
 #define FPS 60
 
-int main(void) {
+int main(int argc, char **argv) {
+
+  if (strcmp(argv[1], ".") == 0) {
+    char dir[1024];
+    getcwd(dir, sizeof(dir));
+    printf("%s\n", dir);
+    return 0;
+  } else {
+    printf("hello whaghsld");
+  }
+
   InitWindow(WIDTH, HEIGHT, "Image view");
   SetTargetFPS(FPS);
 
@@ -39,8 +51,8 @@ int main(void) {
     DrawRectanglePro(rect, origin, angle + 10, YELLOW);
 
     // cursor : debugging
-    printf("%d\n", GetMouseX());
-    printf("%d\n", GetMouseY());
+    // printf("%d\n", GetMouseX());
+    // printf("%d\n", GetMouseY());
 
     angle += 1.50;
 
@@ -52,9 +64,9 @@ int main(void) {
     Rectangle Exitbutton = {650, 10, 50, 25};
     bool Exit_hover = Navigation(Exitbutton, "Exit");
 
-    if (Open_hover && IsMouseButtonPressed(10)) {
+    if (Open_hover && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
       printf("WOw\n");
-    } else if (Exit_hover && IsMouseButtonPressed(10)) {
+    } else if (Exit_hover && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
       exit(0);
     }
 
