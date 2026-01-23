@@ -5,13 +5,13 @@ CFLAGS = -Wall -Wextra
 LDLIBS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
 run: compile # run and compile
-	./main
+	./cc
 
 compile: # compile
-	$(CC) $(CFLAGS) src/main.c src/navigation.c -o main $(LDLIBS)
+	$(CC) $(CFLAGS) src/main.c src/navigation.c -o cc $(LDLIBS)
 
-clean: main # clean
-	rm main
+clean: cc # clean
+	rm cc
 
 
 .PHONY: help

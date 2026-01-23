@@ -1,3 +1,11 @@
+# what do i want [planning]
+----------
+
+- CC a command line util that will open a picture in window
+    - Pass a argument of file or dir
+
+----------
+
     idk if i what this
 
     // Vector2 Mousepos = GetMousePosition();
@@ -12,3 +20,4 @@
     //     printf("wow\n");
     //   }
     // }
+

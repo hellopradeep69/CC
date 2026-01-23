@@ -1,5 +1,6 @@
 #include "navigation.h"
 #include "raylib.h"
+#include <dirent.h>
 #include <stdbool.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -9,57 +10,57 @@
 
 #define WIDTH 700
 #define HEIGHT 700
-#define BLOCK_SIZE 200
-#define BLOCK_SIZE2 100
 #define FPS 60
 
 int main(int argc, char **argv) {
+
+  if (argc < 2 || strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "-help") == 0) {
+    printf("Usage:\n");
+    return 1;
+  }
 
   if (strcmp(argv[1], ".") == 0) {
     char dir[1024];
     getcwd(dir, sizeof(dir));
     printf("%s\n", dir);
-    return 0;
-  } else {
-    printf("hello whaghsld");
+    return *dir;
+  }
+
+  char filepath;
+  strcpy(&filepath, argv[1]);
+  printf("%s\n", &filepath);
+
+  if (DirectoryExists(&filepath) == 1) {
+    printf("Directory Not Exists\n");
+  } else if (FileExists(&filepath) == 1) {
+    printf("it is a file");
   }
 
   InitWindow(WIDTH, HEIGHT, "Image view");
   SetTargetFPS(FPS);
 
-  Rectangle rect = {WIDTH / 2.0, HEIGHT / 2.0, BLOCK_SIZE2, BLOCK_SIZE2};
-  Vector2 origin = {BLOCK_SIZE2 / 2.0, BLOCK_SIZE2 / 2.0};
+  Image img = LoadImage(&filepath);
+  ImageResize(&img, 500, 500);
 
-  Rectangle rect2 = {WIDTH / 2.0, HEIGHT / 2.0, BLOCK_SIZE, BLOCK_SIZE};
-  Vector2 origin2 = {BLOCK_SIZE / 2.0, BLOCK_SIZE / 2.0};
+  ImageDrawPixel(&img, WIDTH / 2, HEIGHT / 2, WHITE);
 
-  float angle = 0;
+  Texture2D tex = LoadTextureFromImage(img);
 
   while (!WindowShouldClose()) {
     BeginDrawing();
-    ClearBackground(DARKGRAY);
+    ClearBackground(BLACK);
 
-    DrawText("Mr.Real", 110, 100, 29, RED);
-
-    DrawRectangle(WIDTH / 2 - BLOCK_SIZE / 2, HEIGHT / 2 - BLOCK_SIZE / 2,
-                  BLOCK_SIZE, BLOCK_SIZE, DARKBROWN);
-
-    DrawRectangle(0, 0, 700, 40, BLACK);
-
-    // rotating rect
-    DrawRectanglePro(rect2, origin2, angle, GREEN);
-    DrawRectanglePro(rect, origin, angle + 10, YELLOW);
+    DrawRectangle(0, 0, 700, 40, DARKGRAY);
+    DrawTexture(tex, 100, 100, WHITE);
 
     // cursor : debugging
     // printf("%d\n", GetMouseX());
     // printf("%d\n", GetMouseY());
 
-    angle += 1.50;
-
     DrawFPS(600, 50);
 
     Rectangle Openbutton = {10, 10, 50, 25};
-    bool Open_hover = Navigation(Openbutton, "Open ");
+    bool Open_hover = Navigation(Openbutton, "ImgView");
 
     Rectangle Exitbutton = {650, 10, 50, 25};
     bool Exit_hover = Navigation(Exitbutton, "Exit");
