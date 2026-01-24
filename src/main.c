@@ -11,6 +11,7 @@
 #define WIDTH 700
 #define HEIGHT 700
 #define FPS 60
+#define MAX 1024
 
 int main(int argc, char **argv) {
 
@@ -19,27 +20,43 @@ int main(int argc, char **argv) {
     return 1;
   }
 
+  char filepath[MAX];
+
   if (strcmp(argv[1], ".") == 0) {
-    char dir[1024];
-    getcwd(dir, sizeof(dir));
-    printf("%s\n", dir);
-    return *dir;
+    char dir_temp[1024];
+    getcwd(dir_temp, sizeof(dir_temp));
+    strcpy(filepath, dir_temp);
+    printf("%s\n", filepath);
+  } else {
+    strcpy(filepath, argv[1]);
+    printf("%s\n", filepath);
   }
 
-  char filepath;
-  strcpy(&filepath, argv[1]);
-  printf("%s\n", &filepath);
-
-  if (DirectoryExists(&filepath) == 1) {
-    printf("Directory Not Exists\n");
-  } else if (FileExists(&filepath) == 1) {
-    printf("it is a file");
+  if (DirectoryExists(filepath) == 0 || FileExists(filepath) == 0) {
+    printf("Enter a Valid Path\n");
+    return 1;
   }
+
+  DIR *dir;
+  struct dirent *entry;
+  printf("this is path %s\n", filepath);
+
+  dir = opendir(filepath);
+  if (dir == NULL) {
+    perror("unable to open the dir");
+    return 1;
+  }
+
+  while ((entry = readdir(dir)) != NULL) {
+    printf("%s\n", entry->d_name);
+  }
+
+  closedir(dir);
 
   InitWindow(WIDTH, HEIGHT, "Image view");
   SetTargetFPS(FPS);
 
-  Image img = LoadImage(&filepath);
+  Image img = LoadImage(filepath);
   ImageResize(&img, 500, 500);
 
   ImageDrawPixel(&img, WIDTH / 2, HEIGHT / 2, WHITE);
