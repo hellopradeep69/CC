@@ -49,7 +49,9 @@ int main(int argc, char **argv) {
     }
 
     while ((entry = readdir(dir)) != NULL) {
-      printf("%s\n", entry->d_name);
+      if (entry->d_type == DT_REG) {
+        printf("%s\n", entry->d_name);
+      }
     }
     closedir(dir);
   }
