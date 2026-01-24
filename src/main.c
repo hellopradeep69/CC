@@ -32,26 +32,27 @@ int main(int argc, char **argv) {
     printf("%s\n", filepath);
   }
 
-  if (DirectoryExists(filepath) == 0 || FileExists(filepath) == 0) {
+  if (DirectoryExists(filepath) == 0 && FileExists(filepath) == 0) {
     printf("Enter a Valid Path\n");
     return 1;
   }
 
-  DIR *dir;
-  struct dirent *entry;
-  printf("this is path %s\n", filepath);
+  if (DirectoryExists(filepath)) {
+    DIR *dir;
+    struct dirent *entry;
+    printf("this is path %s\n", filepath);
 
-  dir = opendir(filepath);
-  if (dir == NULL) {
-    perror("unable to open the dir");
-    return 1;
+    dir = opendir(filepath);
+    if (dir == NULL) {
+      perror("unable to open the dir");
+      return 1;
+    }
+
+    while ((entry = readdir(dir)) != NULL) {
+      printf("%s\n", entry->d_name);
+    }
+    closedir(dir);
   }
-
-  while ((entry = readdir(dir)) != NULL) {
-    printf("%s\n", entry->d_name);
-  }
-
-  closedir(dir);
 
   InitWindow(WIDTH, HEIGHT, "Image view");
   SetTargetFPS(FPS);
