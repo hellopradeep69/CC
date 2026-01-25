@@ -13,6 +13,12 @@
 #define FPS 60
 #define MAX 1024
 
+bool IsExtension(const char *file) {
+  bool ext = IsFileExtension(file, ".png") || IsFileExtension(file, ".jpg");
+  printf("%d\n", ext);
+  return ext;
+}
+
 int main(int argc, char **argv) {
 
   if (argc < 2 || strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "-help") == 0) {
@@ -37,6 +43,7 @@ int main(int argc, char **argv) {
     return 1;
   }
 
+  char images[MAX];
   if (DirectoryExists(filepath)) {
     DIR *dir;
     struct dirent *entry;
@@ -49,17 +56,26 @@ int main(int argc, char **argv) {
     }
 
     while ((entry = readdir(dir)) != NULL) {
-      if (entry->d_type == DT_REG) {
-        printf("%s\n", entry->d_name);
+      if (entry->d_type == DT_REG && IsExtension(entry->d_name)) {
+        snprintf(images, sizeof(images), "%s/%s", argv[1], entry->d_name);
+        break;
       }
     }
     closedir(dir);
+  } else {
+    if (!IsExtension(argv[1])) {
+      printf("Not a supported image file\n");
+      return 1;
+    }
+    snprintf(images, MAX, "%s", filepath);
   }
+
+  IsExtension(images);
 
   InitWindow(WIDTH, HEIGHT, "Image view");
   SetTargetFPS(FPS);
 
-  Image img = LoadImage(filepath);
+  Image img = LoadImage(images);
   ImageResize(&img, 500, 500);
 
   ImageDrawPixel(&img, WIDTH / 2, HEIGHT / 2, WHITE);
@@ -97,5 +113,6 @@ int main(int argc, char **argv) {
 
     EndDrawing();
   }
+  UnloadTexture(tex);
   return 0;
 }
