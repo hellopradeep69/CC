@@ -101,6 +101,8 @@ int main(int argc, char **argv) {
     Rectangle Exitbutton = {650, 10, 50, 25};
     bool Exit_hover = Navigation(Exitbutton, "Exit");
 
+    // This is nav
+
     if (Open_hover && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
       printf("WOw\n");
     } else if (Exit_hover && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
