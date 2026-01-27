@@ -5,7 +5,7 @@ CFLAGS = -Wall -Wextra
 LDLIBS = -lraylib -lGL -lm -lpthread -ldl -lrt -lX11
 
 run: compile # run and compile
-	./cc
+	./cc test/image.jpg
 
 compile: # compile
 	$(CC) $(CFLAGS) src/main.c src/navigation.c -o cc $(LDLIBS)
