@@ -12,10 +12,11 @@
 #define HEIGHT 700
 #define FPS 60
 #define MAX 1024
+#define MAX_Path 1024
 
 bool IsExtension(const char *file) {
   bool ext = IsFileExtension(file, ".png") || IsFileExtension(file, ".jpg");
-  printf("%d\n", ext);
+  // printf("%d\n", ext);
   return ext;
 }
 
@@ -44,6 +45,9 @@ int main(int argc, char **argv) {
   }
 
   char images[MAX];
+  char imageList[MAX][MAX_Path];
+  int imageCount = 0;
+
   if (DirectoryExists(filepath)) {
     DIR *dir;
     struct dirent *entry;
@@ -57,8 +61,14 @@ int main(int argc, char **argv) {
 
     while ((entry = readdir(dir)) != NULL) {
       if (entry->d_type == DT_REG && IsExtension(entry->d_name)) {
-        snprintf(images, sizeof(images), "%s/%s", argv[1], entry->d_name);
-        break;
+        snprintf(images, sizeof(images), "%s%s", argv[1], entry->d_name);
+        // break;
+
+        if (IsExtension(images)) {
+          strcpy(imageList[imageCount], images);
+          // printf("%c\n", imageList[1]);
+          imageCount++;
+        }
       }
     }
     closedir(dir);
@@ -68,6 +78,10 @@ int main(int argc, char **argv) {
       return 1;
     }
     snprintf(images, MAX, "%s", filepath);
+  }
+
+  for (int i = 0; i <= imageCount; i++) {
+    printf("%s\n", imageList[i]);
   }
 
   IsExtension(images);
