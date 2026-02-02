@@ -61,7 +61,7 @@ int main(int argc, char **argv) {
 
     while ((entry = readdir(dir)) != NULL) {
       if (entry->d_type == DT_REG && IsExtension(entry->d_name)) {
-        snprintf(images, sizeof(images), "%s%s", argv[1], entry->d_name);
+        snprintf(images, sizeof(images), "%s/%s", argv[1], entry->d_name);
         // break;
 
         if (IsExtension(images)) {
