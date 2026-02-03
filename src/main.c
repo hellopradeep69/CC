@@ -125,6 +125,10 @@ int main(int argc, char **argv) {
 
     if (IsKeyDown(KEY_Q)) {
       exit(0);
+    } else if (IsKeyDown(KEY_RIGHT)) {
+      printf("Right feature coming soon");
+    } else if (IsKeyDown(KEY_LEFT)) {
+      printf("Left key");
     }
 
     EndDrawing();
