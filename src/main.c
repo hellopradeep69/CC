@@ -12,11 +12,20 @@
 #define HEIGHT 700
 #define FPS 60
 #define MAX 1024
+#define MAX_Path 1024
 
 bool IsExtension(const char *file) {
   bool ext = IsFileExtension(file, ".png") || IsFileExtension(file, ".jpg");
-  printf("%d\n", ext);
+  // printf("%d\n", ext);
   return ext;
+}
+
+void Load_image(int CurrentImage, char imageList[MAX][MAX_Path]) {
+  Image img = LoadImage(imageList[CurrentImage]);
+  ImageResize(&img, 500, 500);
+  ImageDrawPixel(&img, WIDTH / 2, HEIGHT / 2, WHITE);
+  Texture2D tex = LoadTextureFromImage(img);
+  UnloadImage(img);
 }
 
 int main(int argc, char **argv) {
@@ -44,6 +53,10 @@ int main(int argc, char **argv) {
   }
 
   char images[MAX];
+  char imageList[MAX][MAX_Path];
+  int imageCount = 0;
+  int CurrentImage = 0;
+
   if (DirectoryExists(filepath)) {
     DIR *dir;
     struct dirent *entry;
@@ -58,7 +71,13 @@ int main(int argc, char **argv) {
     while ((entry = readdir(dir)) != NULL) {
       if (entry->d_type == DT_REG && IsExtension(entry->d_name)) {
         snprintf(images, sizeof(images), "%s/%s", argv[1], entry->d_name);
-        break;
+        // break;
+
+        if (IsExtension(images)) {
+          strcpy(imageList[imageCount], images);
+          // printf("what %s\n", imageList[1]);
+          imageCount++;
+        }
       }
     }
     closedir(dir);
@@ -70,12 +89,16 @@ int main(int argc, char **argv) {
     snprintf(images, MAX, "%s", filepath);
   }
 
+  for (int i = 0; i <= imageCount; i++) {
+    printf("%s\n", imageList[i]);
+  }
+
   IsExtension(images);
 
   InitWindow(WIDTH, HEIGHT, "Image view");
   SetTargetFPS(FPS);
 
-  Image img = LoadImage(images);
+  Image img = LoadImage(imageList[CurrentImage]);
   ImageResize(&img, 500, 500);
 
   ImageDrawPixel(&img, WIDTH / 2, HEIGHT / 2, WHITE);
@@ -101,6 +124,8 @@ int main(int argc, char **argv) {
     Rectangle Exitbutton = {650, 10, 50, 25};
     bool Exit_hover = Navigation(Exitbutton, "Exit");
 
+    // This is nav
+
     if (Open_hover && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
       printf("WOw\n");
     } else if (Exit_hover && IsMouseButtonPressed(MOUSE_BUTTON_LEFT)) {
@@ -109,6 +134,25 @@ int main(int argc, char **argv) {
 
     if (IsKeyDown(KEY_Q)) {
       exit(0);
+    }
+
+    // navigation
+    if (IsKeyDown(KEY_RIGHT)) { // next
+      if (CurrentImage < imageCount - 1) {
+        CurrentImage++;
+      } else {
+        CurrentImage = 0;
+      }
+      UnloadTexture(tex);
+      Load_image(CurrentImage, imageList);
+    } else if (IsKeyDown(KEY_LEFT)) { // preve
+      if (CurrentImage > 0) {
+        CurrentImage--;
+      } else {
+        CurrentImage = imageCount - 1;
+      }
+      UnloadTexture(tex);
+      Load_image(CurrentImage, imageList);
     }
 
     EndDrawing();
