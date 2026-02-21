@@ -20,6 +20,14 @@ bool IsExtension(const char *file) {
   return ext;
 }
 
+void Load_image(int CurrentImage, char imageList[MAX][MAX_Path]) {
+  Image img = LoadImage(imageList[CurrentImage]);
+  ImageResize(&img, 500, 500);
+  ImageDrawPixel(&img, WIDTH / 2, HEIGHT / 2, WHITE);
+  Texture2D tex = LoadTextureFromImage(img);
+  UnloadImage(img);
+}
+
 int main(int argc, char **argv) {
 
   if (argc < 2 || strcmp(argv[1], "-h") == 0 || strcmp(argv[1], "-help") == 0) {
@@ -47,6 +55,7 @@ int main(int argc, char **argv) {
   char images[MAX];
   char imageList[MAX][MAX_Path];
   int imageCount = 0;
+  int CurrentImage = 0;
 
   if (DirectoryExists(filepath)) {
     DIR *dir;
@@ -66,7 +75,7 @@ int main(int argc, char **argv) {
 
         if (IsExtension(images)) {
           strcpy(imageList[imageCount], images);
-          // printf("%c\n", imageList[1]);
+          // printf("what %s\n", imageList[1]);
           imageCount++;
         }
       }
@@ -89,7 +98,7 @@ int main(int argc, char **argv) {
   InitWindow(WIDTH, HEIGHT, "Image view");
   SetTargetFPS(FPS);
 
-  Image img = LoadImage(images);
+  Image img = LoadImage(imageList[CurrentImage]);
   ImageResize(&img, 500, 500);
 
   ImageDrawPixel(&img, WIDTH / 2, HEIGHT / 2, WHITE);
@@ -125,10 +134,25 @@ int main(int argc, char **argv) {
 
     if (IsKeyDown(KEY_Q)) {
       exit(0);
-    } else if (IsKeyDown(KEY_RIGHT)) {
-      printf("Right feature coming soon");
-    } else if (IsKeyDown(KEY_LEFT)) {
-      printf("Left key");
+    }
+
+    // navigation
+    if (IsKeyDown(KEY_RIGHT)) { // next
+      if (CurrentImage < imageCount - 1) {
+        CurrentImage++;
+      } else {
+        CurrentImage = 0;
+      }
+      UnloadTexture(tex);
+      Load_image(CurrentImage, imageList);
+    } else if (IsKeyDown(KEY_LEFT)) { // preve
+      if (CurrentImage > 0) {
+        CurrentImage--;
+      } else {
+        CurrentImage = imageCount - 1;
+      }
+      UnloadTexture(tex);
+      Load_image(CurrentImage, imageList);
     }
 
     EndDrawing();
