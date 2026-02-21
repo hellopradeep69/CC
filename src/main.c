@@ -25,6 +25,7 @@ void Load_image(int CurrentImage, char imageList[MAX][MAX_Path]) {
   ImageResize(&img, 500, 500);
   ImageDrawPixel(&img, WIDTH / 2, HEIGHT / 2, WHITE);
   Texture2D tex = LoadTextureFromImage(img);
+  DrawTexture(tex, 100, 100, WHITE);
   UnloadImage(img);
 }
 
