@@ -14,12 +14,14 @@
 #define MAX 1024
 #define MAX_Path 1024
 
+// This extension check for the file type and return the type
 bool IsExtension(const char *file) {
   bool ext = IsFileExtension(file, ".png") || IsFileExtension(file, ".jpg");
   // printf("%d\n", ext);
   return ext;
 }
 
+// this load the images to be viewed
 void Load_image(int CurrentImage, char imageList[MAX][MAX_Path]) {
   Image img = LoadImage(imageList[CurrentImage]);
   ImageResize(&img, 500, 500);
@@ -55,10 +57,13 @@ int main(int argc, char **argv) {
     return 1;
   }
 
+  printf(" File path %s", filepath);
+
   char images[MAX];
   char imageList[MAX][MAX_Path];
   int imageCount = 0;
   int CurrentImage = 0;
+  bool IsNoImages;
 
   if (DirectoryExists(filepath)) {
     DIR *dir;
@@ -89,12 +94,18 @@ int main(int argc, char **argv) {
       printf("Not a supported image file\n");
       return 1;
     }
-    snprintf(images, MAX, "%s", filepath);
+    snprintf(imageList[0], MAX, "%s", filepath);
+    imageCount = 1;
   }
 
-  for (int i = 0; i <= imageCount; i++) {
-    printf("%s\n", imageList[i]);
+  if (imageCount == 0) {
+    IsNoImages = true;
   }
+
+  // Print out all the images avail in the dir for debugging purpose
+  // for (int i = 0; i <= imageCount; i++) {
+  //   printf("%s\n", imageList[i]);
+  // }
 
   IsExtension(images);
 
@@ -120,6 +131,13 @@ int main(int argc, char **argv) {
     // printf("%d\n", GetMouseY());
 
     DrawFPS(600, 50);
+
+    if (IsNoImages) {
+      BeginDrawing();
+      ClearBackground(BLACK);
+      DrawRectangle(0, 0, 700, 40, DARKGRAY);
+      DrawText("No image available", 100, 100, 20, RED);
+    }
 
     Rectangle Openbutton = {10, 10, 50, 25};
     bool Open_hover = Navigation(Openbutton, "ImgView");
