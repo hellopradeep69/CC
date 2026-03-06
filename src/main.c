@@ -135,12 +135,12 @@ int main(int argc, char **argv) {
       exit(0);
     }
 
-    if (IsKeyDown(KEY_Q)) {
+    if (IsKeyPressed(KEY_Q)) {
       exit(0);
     }
 
     // navigation
-    if (IsKeyDown(KEY_RIGHT)) { // next
+    if (IsKeyPressed(KEY_RIGHT)) { // next
       if (CurrentImage < imageCount - 1) {
         CurrentImage++;
       } else {
@@ -148,7 +148,7 @@ int main(int argc, char **argv) {
       }
       UnloadTexture(tex);
       Load_image(CurrentImage, imageList);
-    } else if (IsKeyDown(KEY_LEFT)) { // preve
+    } else if (IsKeyPressed(KEY_LEFT)) { // preve
       if (CurrentImage > 0) {
         CurrentImage--;
       } else {
