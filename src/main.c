@@ -28,6 +28,7 @@ void Load_image(int CurrentImage, char imageList[MAX][MAX_Path]) {
   ImageDrawPixel(&img, WIDTH / 2, HEIGHT / 2, WHITE);
   Texture2D tex = LoadTextureFromImage(img);
   DrawTexture(tex, 100, 100, WHITE);
+  // DrawText(imageList[CurrentImage], 70, 630, 14, GOLD);
   UnloadImage(img);
 }
 
@@ -139,6 +140,8 @@ int main(int argc, char **argv) {
       DrawText("No image available", 100, 100, 20, RED);
     }
 
+    DrawText(imageList[CurrentImage], 70, 630, 15, GOLD);
+
     Rectangle Openbutton = {10, 10, 50, 25};
     bool Open_hover = Navigation(Openbutton, "ImgView");
 
@@ -179,5 +182,6 @@ int main(int argc, char **argv) {
     EndDrawing();
   }
   UnloadTexture(tex);
+
   return 0;
 }
