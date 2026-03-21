@@ -1,9 +1,9 @@
-#### CC[raylib]
+#### Fah [raylib]
 
 - An image viewer
 
 ```bash
-./cc /path/to/the/image
+./fah /path/to/the/image
 ```
 
 ----------
