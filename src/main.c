@@ -47,10 +47,10 @@ int main(int argc, char **argv) {
     char dir_temp[1024];
     getcwd(dir_temp, sizeof(dir_temp));
     strcpy(filepath, dir_temp);
-    printf("%s\n", filepath);
+    // printf("%s\n", filepath);
   } else {
     strcpy(filepath, argv[1]);
-    printf("%s\n", filepath);
+    // printf("%s\n", filepath);
   }
 
   if (DirectoryExists(filepath) == 0 && FileExists(filepath) == 0) {
@@ -58,7 +58,7 @@ int main(int argc, char **argv) {
     return 1;
   }
 
-  printf(" File path %s", filepath);
+  printf(" File path : %s", filepath);
 
   char images[MAX];
   char imageList[MAX][MAX_Path];
@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
   if (DirectoryExists(filepath)) {
     DIR *dir;
     struct dirent *entry;
-    printf("this is path %s\n", filepath);
+    // printf("this is path %s\n", filepath);
 
     dir = opendir(filepath);
     if (dir == NULL) {
@@ -110,6 +110,7 @@ int main(int argc, char **argv) {
 
   IsExtension(images);
 
+  SetTraceLogLevel(LOG_NONE);
   InitWindow(WIDTH, HEIGHT, "Image view");
   SetTargetFPS(FPS);
 
